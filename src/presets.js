@@ -1,10 +1,10 @@
-import { parseBoard } from "./gameOfLife";
+import { parseGrid } from "./gameOfLife";
 
 const presets = [
   {
     value: "none",
     label: "None",
-    board: `
+    grid: `
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
@@ -25,7 +25,7 @@ const presets = [
   {
     value: "boxes",
     label: "Boxes",
-    board: `
+    grid: `
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . X X . X X . X X . X X . .
@@ -46,7 +46,7 @@ const presets = [
   {
     value: "oscillators",
     label: "Oscillators",
-    board: `
+    grid: `
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . X . . . . . . . . . X . .
@@ -64,6 +64,6 @@ const presets = [
       . . . . . . . . . . . . . . .
     `,
   },
-].map((preset) => ({ ...preset, board: parseBoard(preset.board) }));
+].map((preset) => ({ ...preset, grid: parseGrid(preset.grid) }));
 
 export default presets;

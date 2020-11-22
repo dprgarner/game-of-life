@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Board from "./Board";
+import Grid from "./Grid";
 import { iterate } from "./gameOfLife";
 import presets from "./presets";
 
@@ -8,7 +8,7 @@ import "./App.css";
 
 function App() {
   const [preset, setPreset] = useState(presets[0].value);
-  const [cells, setCells] = useState(presets[0].board);
+  const [cells, setCells] = useState(presets[0].grid);
   const [speed, setSpeed] = useState(0.05);
   const [inProgress, setInProgress] = useState(false);
 
@@ -24,12 +24,12 @@ function App() {
 
   const updatePreset = (nextPreset) => {
     setPreset(nextPreset);
-    setCells(presets.find(({ value }) => value === nextPreset).board);
+    setCells(presets.find(({ value }) => value === nextPreset).grid);
   };
 
   return (
     <div className="App">
-      <Board
+      <Grid
         cells={cells}
         onCellClick={(setI, setJ, alive) =>
           setCells(

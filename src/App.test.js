@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 
 import App from "./App";
-import { getBoardFromScreen, getCell, setCell } from "./testHelpers";
+import { getGridFromScreen, getCell, setCell } from "./testHelpers";
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -26,7 +26,7 @@ describe("preset patterns", () => {
     const presetDropdown = getPresetDropdown();
     expect(presetDropdown).toBeInTheDocument();
     expect(presetDropdown.value).toBe("none");
-    expect(getBoardFromScreen()).toMatchBoard(`
+    expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
@@ -51,7 +51,7 @@ describe("preset patterns", () => {
     setPresetDropdown(screen.getByText("Boxes"));
 
     expect(getPresetDropdown().value).toBe("boxes");
-    expect(getBoardFromScreen()).toMatchBoard(`
+    expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . X X . X X . X X . X X . .
@@ -76,7 +76,7 @@ describe("preset patterns", () => {
     setPresetDropdown(screen.getByText("Oscillators"));
 
     expect(getPresetDropdown().value).toBe("oscillators");
-    expect(getBoardFromScreen()).toMatchBoard(`
+    expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
       . . X . . . . . . . . . X . .
@@ -108,7 +108,7 @@ describe("preset patterns", () => {
       setPresetDropdown(screen.getByText("None"));
 
       expect(getPresetDropdown().value).toBe("none");
-      expect(getBoardFromScreen()).toMatchBoard(`
+      expect(getGridFromScreen()).toMatchGrid(`
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
@@ -135,7 +135,7 @@ describe("toggling cells", () => {
 
     setCell(1, 1);
 
-    expect(getBoardFromScreen()).toMatchBoard(`
+    expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . X . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
@@ -163,7 +163,7 @@ describe("toggling cells", () => {
     it("sets an alive cell to dead on click", () => {
       setCell(2, 2);
 
-      expect(getBoardFromScreen()).toMatchBoard(`
+      expect(getGridFromScreen()).toMatchGrid(`
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
@@ -187,7 +187,7 @@ describe("toggling cells", () => {
       fireEvent.mouseOver(getCell(2, 2));
       fireEvent.mouseUp(getCell(2, 2));
 
-      expect(getBoardFromScreen()).toMatchBoard(`
+      expect(getGridFromScreen()).toMatchGrid(`
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . X X . . . . . . . . . . . .
@@ -227,7 +227,7 @@ describe("slider", () => {
 });
 
 describe("given an oscillator set to speed 0.5s", () => {
-  const initialBoard = `
+  const initialGrid = `
     . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . .
     . . . X . . . . . . . . . . .
@@ -244,7 +244,7 @@ describe("given an oscillator set to speed 0.5s", () => {
     . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . .
   `;
-  const oscillatedBoard = `
+  const oscillatedGrid = `
     . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . .
@@ -271,36 +271,36 @@ describe("given an oscillator set to speed 0.5s", () => {
     fireEvent.change(screen.getByRole("slider"), {
       target: { value: 0.5 },
     });
-    expect(getBoardFromScreen()).toMatchBoard(initialBoard);
+    expect(getGridFromScreen()).toMatchGrid(initialGrid);
   });
 
   it("iterates forward on clicking the step button", () => {
     fireEvent.click(screen.getByTitle("Step Forward"));
 
-    expect(getBoardFromScreen()).toMatchBoard(oscillatedBoard);
+    expect(getGridFromScreen()).toMatchGrid(oscillatedGrid);
   });
 
   it("iterates forward after 0.5s intervals", () => {
     fireEvent.click(screen.getByTitle("Start"));
-    expect(getBoardFromScreen()).toMatchBoard(initialBoard);
+    expect(getGridFromScreen()).toMatchGrid(initialGrid);
 
     act(() => jest.advanceTimersByTime(500));
-    expect(getBoardFromScreen()).toMatchBoard(oscillatedBoard);
+    expect(getGridFromScreen()).toMatchGrid(oscillatedGrid);
 
     act(() => jest.advanceTimersByTime(500));
-    expect(getBoardFromScreen()).toMatchBoard(initialBoard);
+    expect(getGridFromScreen()).toMatchGrid(initialGrid);
   });
 
   it("stops iterating when Stop button clicked", () => {
     fireEvent.click(screen.getByTitle("Start"));
-    expect(getBoardFromScreen()).toMatchBoard(initialBoard);
+    expect(getGridFromScreen()).toMatchGrid(initialGrid);
 
     act(() => jest.advanceTimersByTime(500));
-    expect(getBoardFromScreen()).toMatchBoard(oscillatedBoard);
+    expect(getGridFromScreen()).toMatchGrid(oscillatedGrid);
 
     fireEvent.click(screen.getByTitle("Stop"));
     act(() => jest.advanceTimersByTime(500));
-    expect(getBoardFromScreen()).toMatchBoard(oscillatedBoard);
+    expect(getGridFromScreen()).toMatchGrid(oscillatedGrid);
   });
 
   it("hides the stop button when stopped", () => {

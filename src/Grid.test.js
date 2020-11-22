@@ -1,19 +1,19 @@
 import { render, fireEvent } from "@testing-library/react";
 
-import { parseBoard } from "./gameOfLife";
-import Board from "./Board";
-import { getCell, getBoardFromScreen, setCell } from "./testHelpers";
+import { parseGrid } from "./gameOfLife";
+import Grid from "./Grid";
+import { getCell, getGridFromScreen, setCell } from "./testHelpers";
 
 test("renders a 2x2 box in a 4x4 grid", () => {
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} />);
+  render(<Grid cells={cells} />);
 
-  expect(getBoardFromScreen()).toMatchBoard(`
+  expect(getGridFromScreen()).toMatchGrid(`
     . . . .
     . X X .
     . X X .
@@ -23,13 +23,13 @@ test("renders a 2x2 box in a 4x4 grid", () => {
 
 test("triggers a callback on cell click", () => {
   const onCellClick = jest.fn();
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} onCellClick={onCellClick} />);
+  render(<Grid cells={cells} onCellClick={onCellClick} />);
 
   setCell(3, 3);
 
@@ -38,13 +38,13 @@ test("triggers a callback on cell click", () => {
 
 test("paints several cells in a single stroke", () => {
   const onCellClick = jest.fn();
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} onCellClick={onCellClick} />);
+  render(<Grid cells={cells} onCellClick={onCellClick} />);
 
   fireEvent.mouseDown(getCell(3, 0));
   fireEvent.mouseOver(getCell(3, 1));
@@ -60,13 +60,13 @@ test("paints several cells in a single stroke", () => {
 
 test("only sets cells when the mouse is down", () => {
   const onCellClick = jest.fn();
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} onCellClick={onCellClick} />);
+  render(<Grid cells={cells} onCellClick={onCellClick} />);
   fireEvent.mouseOver(getCell(3, 0));
   fireEvent.mouseOver(getCell(3, 1));
   expect(onCellClick).not.toHaveBeenCalled();
@@ -82,13 +82,13 @@ test("only sets cells when the mouse is down", () => {
 
 test("sets hovered cells to dead if first clicked cell is alive", () => {
   const onCellClick = jest.fn();
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} onCellClick={onCellClick} />);
+  render(<Grid cells={cells} onCellClick={onCellClick} />);
 
   fireEvent.mouseDown(getCell(1, 1));
   fireEvent.mouseOver(getCell(2, 1));
@@ -101,13 +101,13 @@ test("sets hovered cells to dead if first clicked cell is alive", () => {
 
 test("sets hovered cells to alive if first clicked cell is dead", () => {
   const onCellClick = jest.fn();
-  const cells = parseBoard(`
+  const cells = parseGrid(`
     . . . .
     . X X .
     . X X .
     . . . .
   `);
-  render(<Board cells={cells} onCellClick={onCellClick} />);
+  render(<Grid cells={cells} onCellClick={onCellClick} />);
 
   fireEvent.mouseDown(getCell(0, 1));
   fireEvent.mouseOver(getCell(1, 1));

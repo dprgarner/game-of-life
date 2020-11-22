@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import "./Board.css";
+import "./Grid.css";
 
-const Board = ({ cells, onCellClick }) => {
+const Grid = ({ cells, onCellClick }) => {
   const isMouseDown = useRef(false);
   const isCreatingCells = useRef(false);
 
@@ -12,15 +12,15 @@ const Board = ({ cells, onCellClick }) => {
   }, []);
 
   return (
-    <div className="board-container">
-      <table className="board-table">
+    <div className="grid-container">
+      <table className="grid-table">
         <tbody>
           {cells.map((row, i) => (
-            <tr key={i} className="board-row">
+            <tr key={i} className="grid-row">
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className={`board-cell ${cell ? "alive" : ""}`}
+                  className={`grid-cell ${cell ? "alive" : ""}`}
                   onMouseDown={() => {
                     isMouseDown.current = true;
                     isCreatingCells.current = !cell;
@@ -41,4 +41,4 @@ const Board = ({ cells, onCellClick }) => {
   );
 };
 
-export default Board;
+export default Grid;

@@ -1,8 +1,8 @@
-import { parseBoard, countNeighbours, iterate } from "./gameOfLife";
+import { parseGrid, countNeighbours, iterate } from "./gameOfLife";
 
-describe("parseBoard", () => {
-  it("creates a board from a string", () => {
-    const board = `
+describe("parseGrid", () => {
+  it("creates a grid from a string", () => {
+    const grid = `
       . . . . . .
       . . . . . .
       . X X . . .
@@ -10,7 +10,7 @@ describe("parseBoard", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(parseBoard(board)).toEqual([
+    expect(parseGrid(grid)).toEqual([
       [false, false, false, false, false, false],
       [false, false, false, false, false, false],
       [false, true, true, false, false, false],
@@ -23,7 +23,7 @@ describe("parseBoard", () => {
 
 describe("countNeighbours", () => {
   it("counts living cell neighbours", () => {
-    const board = `
+    const grid = `
       . . . . . .
       . . . . . .
       . . X X . .
@@ -31,7 +31,7 @@ describe("countNeighbours", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(countNeighbours(parseBoard(board))).toEqual([
+    expect(countNeighbours(parseGrid(grid))).toEqual([
       [0, 0, 0, 0, 0, 0],
       [0, 1, 2, 2, 1, 0],
       [0, 2, 3, 3, 2, 0],
@@ -42,13 +42,13 @@ describe("countNeighbours", () => {
   });
 
   it("counts neighbours at the top and left edges", () => {
-    const board = `
+    const grid = `
       X X . .
       X X . .
       . . . .
       . . . .
     `;
-    expect(countNeighbours(parseBoard(board))).toEqual([
+    expect(countNeighbours(parseGrid(grid))).toEqual([
       [3, 3, 2, 0],
       [3, 3, 2, 0],
       [2, 2, 1, 0],
@@ -57,13 +57,13 @@ describe("countNeighbours", () => {
   });
 
   it("counts neighbours at the bottom and right edges", () => {
-    const board = `
+    const grid = `
       . . . .
       . . . .
       . . X X
       . . X X
     `;
-    expect(countNeighbours(parseBoard(board))).toEqual([
+    expect(countNeighbours(parseGrid(grid))).toEqual([
       [0, 0, 0, 0],
       [0, 1, 2, 2],
       [0, 2, 3, 3],
@@ -71,14 +71,14 @@ describe("countNeighbours", () => {
     ]);
   });
 
-  it("counts neighbours on a non-square board", () => {
-    const board = `
+  it("counts neighbours on a non-square grid", () => {
+    const grid = `
       X X . . . .
       X X . . . .
       . . . . X X
       . . . . X X
     `;
-    expect(countNeighbours(parseBoard(board))).toEqual([
+    expect(countNeighbours(parseGrid(grid))).toEqual([
       [3, 3, 2, 0, 0, 0],
       [3, 3, 2, 1, 2, 2],
       [2, 2, 1, 2, 3, 3],
@@ -88,8 +88,8 @@ describe("countNeighbours", () => {
 });
 
 describe("iterate", () => {
-  it("leaves an empty board unchanged", () => {
-    const board = `
+  it("leaves an empty grid unchanged", () => {
+    const grid = `
       . . . . . .
       . . . . . .
       . . . . . .
@@ -97,11 +97,11 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(board))).toMatchBoard(board);
+    expect(iterate(parseGrid(grid))).toMatchGrid(grid);
   });
 
   it("leaves a square unchanged", () => {
-    const board = `
+    const grid = `
       . . . . . .
       . . . . . .
       . . X X . .
@@ -109,11 +109,11 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(board))).toMatchBoard(board);
+    expect(iterate(parseGrid(grid))).toMatchGrid(grid);
   });
 
   it("kills an isolated cell", () => {
-    const initialBoard = `
+    const initialGrid = `
       . . . . . .
       . . . . . .
       . . X . . .
@@ -121,7 +121,7 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    const finalBoard = `
+    const finalGrid = `
       . . . . . .
       . . . . . .
       . . . . . .
@@ -129,11 +129,11 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(initialBoard))).toMatchBoard(finalBoard);
+    expect(iterate(parseGrid(initialGrid))).toMatchGrid(finalGrid);
   });
 
   it("creates a new cell", () => {
-    const initialBoard = `
+    const initialGrid = `
       . . . . . .
       . . . . . .
       . . X X . .
@@ -141,7 +141,7 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    const finalBoard = `
+    const finalGrid = `
       . . . . . .
       . . . . . .
       . . X X . .
@@ -149,6 +149,6 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(initialBoard))).toMatchBoard(finalBoard);
+    expect(iterate(parseGrid(initialGrid))).toMatchGrid(finalGrid);
   });
 });

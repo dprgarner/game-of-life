@@ -1,6 +1,6 @@
 import { screen, getAllByRole, fireEvent } from "@testing-library/react";
 
-export const getBoardFromScreen = () =>
+export const getGridFromScreen = () =>
   screen
     .getAllByRole("row")
     .map((row) =>

@@ -1,14 +1,12 @@
 import "@testing-library/jest-dom";
 
-const toCanonicalString = (board) =>
-  board
-    .map((row) => row.map((cell) => (cell ? "X" : ".")).join(" "))
-    .join("\n");
+const toCanonicalString = (grid) =>
+  grid.map((row) => row.map((cell) => (cell ? "X" : ".")).join(" ")).join("\n");
 
 expect.extend({
-  toMatchBoard(actualBoard, expectedBoardString) {
-    const actualString = toCanonicalString(actualBoard);
-    const cleanedExpectedString = expectedBoardString
+  toMatchGrid(actualGrid, expectedGridString) {
+    const actualString = toCanonicalString(actualGrid);
+    const cleanedExpectedString = expectedGridString
       .trim()
       .split("\n")
       .map((row) => row.trim())
@@ -18,13 +16,13 @@ expect.extend({
     if (pass) {
       return {
         message: () =>
-          `Expected boards not to match.\nBoard:\n${cleanedExpectedString}`,
+          `Expected grids not to match.\nGrid:\n${cleanedExpectedString}`,
         pass: true,
       };
     } else {
       return {
         message: () =>
-          `Expected boards to match.\nExpected:\n${cleanedExpectedString}\n\nActual:\n${actualString}`,
+          `Expected grids to match.\nExpected:\n${cleanedExpectedString}\n\nActual:\n${actualString}`,
         pass: false,
       };
     }
