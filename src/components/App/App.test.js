@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 
 import App from "./App";
-import { getGridFromScreen, getCell, setCell } from "./testHelpers";
+import { getGridFromScreen, getCell, setCell } from "../../testHelpers";
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -19,10 +19,12 @@ const setPresetDropdown = (option) =>
     target: { value: option.value },
   });
 
-describe("preset patterns", () => {
-  it('renders "none" by default', () => {
+describe("given the app is in the initial state", () => {
+  beforeEach(() => {
     render(<App />);
+  });
 
+  it('shows the "none" preset by default', () => {
     const presetDropdown = getPresetDropdown();
     expect(presetDropdown).toBeInTheDocument();
     expect(presetDropdown.value).toBe("none");
@@ -45,9 +47,7 @@ describe("preset patterns", () => {
     `);
   });
 
-  it('loads the "boxes" preset', () => {
-    render(<App />);
-
+  it('shows the "boxes" preset on selection', () => {
     setPresetDropdown(screen.getByText("Boxes"));
 
     expect(getPresetDropdown().value).toBe("boxes");
@@ -70,9 +70,7 @@ describe("preset patterns", () => {
     `);
   });
 
-  it('loads the "oscillators" preset', () => {
-    render(<App />);
-
+  it('shows the "oscillators" preset on selection', () => {
     setPresetDropdown(screen.getByText("Oscillators"));
 
     expect(getPresetDropdown().value).toBe("oscillators");
@@ -95,10 +93,43 @@ describe("preset patterns", () => {
     `);
   });
 
+  it("sets a dead cell to alive on click", () => {
+    setCell(1, 1);
+
+    expect(getGridFromScreen()).toMatchGrid(`
+      . . . . . . . . . . . . . . .
+      . X . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . .
+    `);
+  });
+
+  it("has the default slider speed of 0.05s", () => {
+    expect(screen.getByRole("slider").value).toEqual("0.05");
+    expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.05s");
+  });
+
+  it("sets the slider speed to 0.1s", () => {
+    fireEvent.change(screen.getByRole("slider"), {
+      target: { value: 0.1 },
+    });
+    expect(screen.getByRole("slider").value).toEqual("0.1");
+    expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.1s");
+  });
+
   describe('given the preset is set to "boxes"', () => {
     beforeEach(() => {
-      render(<App />);
-
       setPresetDropdown(screen.getByText("Boxes"));
 
       expect(getPresetDropdown().value).toBe("boxes");
@@ -127,36 +158,9 @@ describe("preset patterns", () => {
       `);
     });
   });
-});
-
-describe("toggling cells", () => {
-  it("sets a dead cell to alive on click", () => {
-    render(<App />);
-
-    setCell(1, 1);
-
-    expect(getGridFromScreen()).toMatchGrid(`
-      . . . . . . . . . . . . . . .
-      . X . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-    `);
-  });
 
   describe("given a single living cell", () => {
     beforeEach(() => {
-      render(<App />);
       setCell(2, 2);
     });
 
@@ -205,24 +209,6 @@ describe("toggling cells", () => {
         . . . . . . . . . . . . . . .
       `);
     });
-  });
-});
-
-describe("slider", () => {
-  it("initially sets the slider speed to 0.05s", () => {
-    render(<App />);
-
-    expect(screen.getByRole("slider").value).toEqual("0.05");
-    expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.05s");
-  });
-
-  it("sets the slider speed", () => {
-    render(<App />);
-    fireEvent.change(screen.getByRole("slider"), {
-      target: { value: 0.1 },
-    });
-    expect(screen.getByRole("slider").value).toEqual("0.1");
-    expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.1s");
   });
 });
 

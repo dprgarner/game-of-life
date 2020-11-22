@@ -1,4 +1,4 @@
-import { parseGrid } from "./gameOfLife";
+import { parseGrid } from "../gameOfLife";
 
 const presets = [
   {

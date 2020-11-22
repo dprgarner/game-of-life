@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import "./Grid.css";
 
 const Grid = ({ cells, onCellClick }) => {
@@ -16,10 +17,11 @@ const Grid = ({ cells, onCellClick }) => {
       <table className="grid-table">
         <tbody>
           {cells.map((row, i) => (
-            <tr key={i} className="grid-row">
+            <tr key={i} className="grid-row" data-testid="row">
               {row.map((cell, j) => (
                 <td
                   key={j}
+                  data-testid="cell"
                   className={`grid-cell ${cell ? "alive" : ""}`}
                   onMouseDown={() => {
                     isMouseDown.current = true;

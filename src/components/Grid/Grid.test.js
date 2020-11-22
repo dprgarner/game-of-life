@@ -1,8 +1,8 @@
 import { render, fireEvent } from "@testing-library/react";
 
-import { parseGrid } from "./gameOfLife";
+import { getCell, getGridFromScreen, setCell } from "../../testHelpers";
+import { parseGrid } from "../../gameOfLife";
 import Grid from "./Grid";
-import { getCell, getGridFromScreen, setCell } from "./testHelpers";
 
 test("renders a 2x2 box in a 4x4 grid", () => {
   const cells = parseGrid(`
