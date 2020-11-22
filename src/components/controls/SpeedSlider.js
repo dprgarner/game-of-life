@@ -1,6 +1,10 @@
+import "./SpeedSlider.css";
+
 const SpeedSlider = ({ speed, onSetSpeed }) => (
-  <label>
+  <label className="speed-slider">
+    Tick Speed:
     <input
+      className="speed-slider-input"
       type="range"
       min={0.05}
       max={1}

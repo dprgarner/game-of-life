@@ -1,0 +1,12 @@
+.speed-slider {
+  display: block;
+  margin: 8px auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.speed-slider-input {
+  margin: 0 8px;
+}
