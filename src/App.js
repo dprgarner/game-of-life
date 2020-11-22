@@ -1,29 +1,14 @@
 import { useEffect, useState } from "react";
 
-import "./App.css";
 import Board from "./Board";
-import { iterate, parseBoard } from "./gameOfLife";
+import { iterate } from "./gameOfLife";
+import presets from "./presets";
+
+import "./App.css";
 
 function App() {
-  const [cells, setCells] = useState(
-    parseBoard(`
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . X X . . . . . . . . . . .
-      . . X X . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-    `)
-  );
+  const [preset, setPreset] = useState(presets[0].value);
+  const [cells, setCells] = useState(presets[0].board);
   const [speed, setSpeed] = useState(0.05);
   const [inProgress, setInProgress] = useState(false);
 
@@ -36,6 +21,11 @@ function App() {
       return () => clearInterval(interval);
     }
   }, [speed, inProgress]);
+
+  const updatePreset = (nextPreset) => {
+    setPreset(nextPreset);
+    setCells(presets.find(({ value }) => value === nextPreset).board);
+  };
 
   return (
     <div className="App">
@@ -54,13 +44,16 @@ function App() {
       <button onClick={() => setCells(iterate(cells))} title="Step Forward">
         {"| |>"}
       </button>
-      <button onClick={() => setInProgress(true)} title="Start">
-        {"|>"}
-      </button>
-      <button onClick={() => setInProgress(false)} title="Stop">
-        {"[ ]"}
-      </button>
-
+      {!inProgress && (
+        <button onClick={() => setInProgress(true)} title="Start">
+          {"|>"}
+        </button>
+      )}
+      {inProgress && (
+        <button onClick={() => setInProgress(false)} title="Stop">
+          {"[ ]"}
+        </button>
+      )}
       <label>
         <input
           type="range"
@@ -71,6 +64,22 @@ function App() {
           onChange={(e) => setSpeed(parseFloat(e.currentTarget.value))}
         />
         {`${speed}s`}
+      </label>
+
+      <label>
+        Choose Preset:
+        <select
+          value={preset}
+          onChange={(e) => {
+            updatePreset(e.target.value);
+          }}
+        >
+          {presets.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
       </label>
     </div>
   );
