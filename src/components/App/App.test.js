@@ -25,9 +25,7 @@ describe("given the app is in the initial state", () => {
   });
 
   it('shows the "none" preset by default', () => {
-    const presetDropdown = getPresetDropdown();
-    expect(presetDropdown).toBeInTheDocument();
-    expect(presetDropdown.value).toBe("none");
+    expect(getPresetDropdown().value).toBe("none");
     expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
@@ -70,29 +68,6 @@ describe("given the app is in the initial state", () => {
     `);
   });
 
-  it('shows the "oscillators" preset on selection', () => {
-    setPresetDropdown(screen.getByText("Oscillators"));
-
-    expect(getPresetDropdown().value).toBe("oscillators");
-    expect(getGridFromScreen()).toMatchGrid(`
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . X . . . . . . . . . X . .
-      . . X . . . . . . . . . X . .
-      . . X . . . . . . . . . X . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . X . . . . . . . . . X . .
-      . . X . . . . . . . . . X . .
-      . . X . . . . . . . . . X . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-    `);
-  });
-
   it("sets a dead cell to alive on click", () => {
     setCell(1, 1);
 
@@ -115,17 +90,9 @@ describe("given the app is in the initial state", () => {
     `);
   });
 
-  it("has the default slider speed of 0.05s", () => {
+  it("sets the slider speed to 0.05s by default", () => {
     expect(screen.getByRole("slider").value).toEqual("0.05");
     expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.05s");
-  });
-
-  it("sets the slider speed to 0.1s", () => {
-    fireEvent.change(screen.getByRole("slider"), {
-      target: { value: 0.1 },
-    });
-    expect(screen.getByRole("slider").value).toEqual("0.1");
-    expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.1s");
   });
 
   describe('given the preset is set to "boxes"', () => {
@@ -287,14 +254,5 @@ describe("given an oscillator set to speed 0.5s", () => {
     fireEvent.click(screen.getByTitle("Stop"));
     act(() => jest.advanceTimersByTime(500));
     expect(getGridFromScreen()).toMatchGrid(oscillatedGrid);
-  });
-
-  it("hides the stop button when stopped", () => {
-    expect(screen.queryByTitle("Stop")).not.toBeInTheDocument();
-  });
-
-  it("hides the start button when started", () => {
-    fireEvent.click(screen.getByTitle("Start"));
-    expect(screen.queryByTitle("Start")).not.toBeInTheDocument();
   });
 });

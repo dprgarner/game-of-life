@@ -4,7 +4,7 @@ import { getCell, getGridFromScreen, setCell } from "../../testHelpers";
 import { parseGrid } from "../../gameOfLife";
 import Grid from "./Grid";
 
-test("renders a 2x2 box in a 4x4 grid", () => {
+it("renders a 2x2 box in a 4x4 grid", () => {
   const cells = parseGrid(`
     . . . .
     . X X .
@@ -21,7 +21,7 @@ test("renders a 2x2 box in a 4x4 grid", () => {
   `);
 });
 
-test("triggers a callback on cell click", () => {
+it("triggers a callback on cell click", () => {
   const onCellClick = jest.fn();
   const cells = parseGrid(`
     . . . .
@@ -36,7 +36,7 @@ test("triggers a callback on cell click", () => {
   expect(onCellClick).toHaveBeenCalledWith(3, 3, true);
 });
 
-test("paints several cells in a single stroke", () => {
+it("paints several cells in a single stroke", () => {
   const onCellClick = jest.fn();
   const cells = parseGrid(`
     . . . .
@@ -58,7 +58,7 @@ test("paints several cells in a single stroke", () => {
   expect(onCellClick).toHaveBeenCalledWith(3, 3, true);
 });
 
-test("only sets cells when the mouse is down", () => {
+it("only sets cells when the mouse is down", () => {
   const onCellClick = jest.fn();
   const cells = parseGrid(`
     . . . .
@@ -80,7 +80,7 @@ test("only sets cells when the mouse is down", () => {
   expect(onCellClick).toHaveBeenCalledTimes(1);
 });
 
-test("sets hovered cells to dead if first clicked cell is alive", () => {
+it("sets hovered cells to dead if first clicked cell is alive", () => {
   const onCellClick = jest.fn();
   const cells = parseGrid(`
     . . . .
@@ -99,7 +99,7 @@ test("sets hovered cells to dead if first clicked cell is alive", () => {
   expect(onCellClick).toHaveBeenCalledWith(2, 1, false);
 });
 
-test("sets hovered cells to alive if first clicked cell is dead", () => {
+it("sets hovered cells to alive if first clicked cell is dead", () => {
   const onCellClick = jest.fn();
   const cells = parseGrid(`
     . . . .

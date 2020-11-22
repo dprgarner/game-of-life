@@ -46,7 +46,11 @@ function App() {
         }
       />
 
-      <PresetDropdown preset={preset} onSetPreset={updatePreset} />
+      <PresetDropdown
+        presetOptions={presets}
+        preset={preset}
+        onSetPreset={updatePreset}
+      />
       <SpeedSlider speed={speed} onSetSpeed={setSpeed} />
       <PlaybackButtons
         isRunning={isRunning}

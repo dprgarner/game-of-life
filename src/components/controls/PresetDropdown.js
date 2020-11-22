@@ -1,6 +1,4 @@
-import presets from "../../constants/presets";
-
-const PresetDropdown = ({ preset, onSetPreset }) => (
+const PresetDropdown = ({ presetOptions, preset, onSetPreset }) => (
   <>
     <label>
       Choose Preset:
@@ -10,7 +8,7 @@ const PresetDropdown = ({ preset, onSetPreset }) => (
           onSetPreset(e.target.value);
         }}
       >
-        {presets.map(({ value, label }) => (
+        {presetOptions.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}
           </option>
