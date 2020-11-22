@@ -39,3 +39,11 @@ it("triggers onStepForward callback on clicking step forward", () => {
   fireEvent.click(screen.queryByTitle("Step Forward"));
   expect(onStepForwardSpy).toHaveBeenCalled();
 });
+
+it("triggers onReset callback on clicking reset", () => {
+  const onResetSpy = jest.fn();
+  render(<PlaybackButtons onReset={onResetSpy} />);
+
+  fireEvent.click(screen.queryByTitle("Reset"));
+  expect(onResetSpy).toHaveBeenCalled();
+});

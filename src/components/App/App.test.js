@@ -3,6 +3,7 @@ import { act } from "react-dom/test-utils";
 
 import App from "./App";
 import { getGridFromScreen, getCell, setCell } from "../../testHelpers";
+import presets from "../../constants/presets";
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -24,8 +25,8 @@ describe("given the app is in the initial state", () => {
     render(<App />);
   });
 
-  it('shows the "none" preset by default', () => {
-    expect(getPresetDropdown().value).toBe("none");
+  it('shows the "empty" preset by default', () => {
+    expect(getPresetDropdown().value).toBe("empty");
     expect(getGridFromScreen()).toMatchGrid(`
       . . . . . . . . . . . . . . .
       . . . . . . . . . . . . . . .
@@ -45,27 +46,12 @@ describe("given the app is in the initial state", () => {
     `);
   });
 
-  it('shows the "boxes" preset on selection', () => {
-    setPresetDropdown(screen.getByText("Boxes"));
+  it("sets the grid to the next preset", () => {
+    const nextPreset = presets[1];
+    setPresetDropdown(screen.getByText(nextPreset.label));
 
-    expect(getPresetDropdown().value).toBe("boxes");
-    expect(getGridFromScreen()).toMatchGrid(`
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-      . . X X . X X . X X . X X . .
-      . . X X . X X . X X . X X . .
-      . . . . . . . . . . . . . . .
-      . . X X . X X . X X . X X . .
-      . . X X . X X . X X . X X . .
-      . . . . . . . . . . . . . . .
-      . . X X . X X . X X . X X . .
-      . . X X . X X . X X . X X . .
-      . . . . . . . . . . . . . . .
-      . . X X . X X . X X . X X . .
-      . . X X . X X . X X . X X . .
-      . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . .
-    `);
+    expect(getPresetDropdown().value).toBe(nextPreset.value);
+    expect(getGridFromScreen()).toEqual(nextPreset.grid);
   });
 
   it("sets a dead cell to alive on click", () => {
@@ -93,37 +79,6 @@ describe("given the app is in the initial state", () => {
   it("sets the slider speed to 0.05s by default", () => {
     expect(screen.getByRole("slider").value).toEqual("0.05");
     expect(screen.getByRole("slider").parentNode).toHaveTextContent("0.05s");
-  });
-
-  describe('given the preset is set to "boxes"', () => {
-    beforeEach(() => {
-      setPresetDropdown(screen.getByText("Boxes"));
-
-      expect(getPresetDropdown().value).toBe("boxes");
-    });
-
-    it('sets preset back to "none"', () => {
-      setPresetDropdown(screen.getByText("None"));
-
-      expect(getPresetDropdown().value).toBe("none");
-      expect(getGridFromScreen()).toMatchGrid(`
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . .
-      `);
-    });
   });
 
   describe("given a single living cell", () => {
@@ -162,6 +117,28 @@ describe("given the app is in the initial state", () => {
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . X X . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+      `);
+    });
+
+    it("resets the preset on clicking reset", () => {
+      fireEvent.click(screen.queryByTitle("Reset"));
+
+      expect(getGridFromScreen()).toMatchGrid(`
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .

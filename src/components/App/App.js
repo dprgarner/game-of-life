@@ -54,6 +54,7 @@ function App() {
       <SpeedSlider speed={speed} onSetSpeed={setSpeed} />
       <PlaybackButtons
         isRunning={isRunning}
+        onReset={() => updatePreset(preset)}
         onStart={() => setIsRunning(true)}
         onStop={() => setIsRunning(false)}
         onStepForward={() => setCells(iterate(cells))}

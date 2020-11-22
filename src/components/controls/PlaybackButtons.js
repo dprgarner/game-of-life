@@ -1,8 +1,18 @@
 import "./PlaybackButtons.css";
 
-const PlaybackButtons = ({ isRunning, onStart, onStop, onStepForward }) => {
+const PlaybackButtons = ({
+  isRunning,
+  onStart,
+  onStop,
+  onStepForward,
+  onReset,
+}) => {
   return (
     <div>
+      <button onClick={onReset} title="Reset" className="playback-button">
+        {"🔁"}
+      </button>
+
       {isRunning ? (
         <button onClick={onStop} title="Stop" className="playback-button">
           {"⏸️"}
