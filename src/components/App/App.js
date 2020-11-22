@@ -4,7 +4,9 @@ import { iterate } from "../../gameOfLife";
 import presets from "../../constants/presets";
 
 import Grid from "../Grid";
-import Controls from "../Controls";
+import PlaybackButtons from "../controls/PlaybackButtons";
+import PresetDropdown from "../controls/PresetDropdown";
+import SpeedSlider from "../controls/SpeedSlider";
 
 import "./App.css";
 
@@ -12,17 +14,17 @@ function App() {
   const [preset, setPreset] = useState(presets[0].value);
   const [cells, setCells] = useState(presets[0].grid);
   const [speed, setSpeed] = useState(0.05);
-  const [inProgress, setInProgress] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    if (inProgress) {
+    if (isRunning) {
       const interval = setInterval(() => {
         setCells(iterate);
       }, speed * 1000);
 
       return () => clearInterval(interval);
     }
-  }, [speed, inProgress]);
+  }, [speed, isRunning]);
 
   const updatePreset = (nextPreset) => {
     setPreset(nextPreset);
@@ -43,13 +45,13 @@ function App() {
           )
         }
       />
-      <Controls
-        preset={preset}
-        onSetPreset={updatePreset}
-        inProgress={inProgress}
-        onSetInProgress={setInProgress}
-        speed={speed}
-        onSetSpeed={setSpeed}
+
+      <PresetDropdown preset={preset} onSetPreset={updatePreset} />
+      <SpeedSlider speed={speed} onSetSpeed={setSpeed} />
+      <PlaybackButtons
+        isRunning={isRunning}
+        onStart={() => setIsRunning(true)}
+        onStop={() => setIsRunning(false)}
         onStepForward={() => setCells(iterate(cells))}
       />
     </div>
