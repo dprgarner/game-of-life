@@ -1,4 +1,4 @@
-import { parseBoard, countNeighbours, iterate } from "./game";
+import { parseBoard, countNeighbours, iterate } from "./gameOfLife";
 
 describe("parseBoard", () => {
   it("creates a board from a string", () => {

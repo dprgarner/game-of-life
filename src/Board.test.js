@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react";
 
-import { parseBoard } from "./game";
+import { parseBoard } from "./gameOfLife";
 import Board from "./Board";
 import { getCell, getBoardFromScreen } from "./testHelpers";
 

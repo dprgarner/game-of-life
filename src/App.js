@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import "./App.css";
 import Board from "./Board";
-import { iterate, parseBoard } from "./game";
+import { iterate, parseBoard } from "./gameOfLife";
 
 function App() {
   const [cells, setCells] = useState(

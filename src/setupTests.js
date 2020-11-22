@@ -1,10 +1,4 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-
-import { parseBoard } from "./game";
 
 const toCanonicalString = (board) =>
   board
@@ -14,9 +8,11 @@ const toCanonicalString = (board) =>
 expect.extend({
   toMatchBoard(actualBoard, expectedBoardString) {
     const actualString = toCanonicalString(actualBoard);
-    const cleanedExpectedString = toCanonicalString(
-      parseBoard(expectedBoardString)
-    );
+    const cleanedExpectedString = expectedBoardString
+      .trim()
+      .split("\n")
+      .map((row) => row.trim())
+      .join("\n");
     const pass = actualString === cleanedExpectedString;
 
     if (pass) {
