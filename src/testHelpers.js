@@ -1,4 +1,4 @@
-import { screen, getAllByRole } from "@testing-library/react";
+import { screen, getAllByRole, fireEvent } from "@testing-library/react";
 
 export const getBoardFromScreen = () =>
   screen
@@ -9,3 +9,8 @@ export const getBoardFromScreen = () =>
 
 export const getCell = (i, j) =>
   getAllByRole(screen.getAllByRole("row")[i], "cell")[j];
+
+export const setCell = (i, j) => {
+  fireEvent.mouseDown(getCell(i, j));
+  fireEvent.mouseUp(getCell(i, j));
+};

@@ -31,27 +31,27 @@ function App() {
     <div className="App">
       <Board
         cells={cells}
-        onCellClick={(setI, setJ) =>
+        onCellClick={(setI, setJ, alive) =>
           setCells(
             cells.map((row, i) =>
               i === setI
-                ? row.map((cell, j) => (j === setJ ? !cell : cell))
+                ? row.map((cell, j) => (j === setJ ? alive : cell))
                 : row
             )
           )
         }
       />
       <button onClick={() => setCells(iterate(cells))} title="Step Forward">
-        {"| |>"}
+        {"⏭️"}
       </button>
       {!inProgress && (
         <button onClick={() => setInProgress(true)} title="Start">
-          {"|>"}
+          {"▶️"}
         </button>
       )}
       {inProgress && (
         <button onClick={() => setInProgress(false)} title="Stop">
-          {"[ ]"}
+          {"⏸️"}
         </button>
       )}
       <label>

@@ -1,0 +1,16 @@
+.board-container {
+  width: 600px;
+  margin: 64px auto;
+  cursor: pointer;
+}
+
+.board-table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.board-cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+}

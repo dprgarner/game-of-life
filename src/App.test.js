@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 
 import App from "./App";
-import { getCell, getBoardFromScreen } from "./testHelpers";
+import { getBoardFromScreen, getCell, setCell } from "./testHelpers";
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -133,7 +133,7 @@ describe("toggling cells", () => {
   it("sets a dead cell to alive on click", () => {
     render(<App />);
 
-    fireEvent.click(getCell(1, 1));
+    setCell(1, 1);
 
     expect(getBoardFromScreen()).toMatchBoard(`
       . . . . . . . . . . . . . . .
@@ -157,16 +157,40 @@ describe("toggling cells", () => {
   describe("given a single living cell", () => {
     beforeEach(() => {
       render(<App />);
-      fireEvent.click(getCell(2, 2));
+      setCell(2, 2);
     });
 
     it("sets an alive cell to dead on click", () => {
-      fireEvent.click(getCell(2, 2));
+      setCell(2, 2);
 
       expect(getBoardFromScreen()).toMatchBoard(`
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+      `);
+    });
+
+    it("does not toggle the alive cell if a dead cell clicked first", () => {
+      fireEvent.mouseDown(getCell(2, 1));
+      fireEvent.mouseOver(getCell(2, 2));
+      fireEvent.mouseUp(getCell(2, 2));
+
+      expect(getBoardFromScreen()).toMatchBoard(`
+        . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . .
+        . X X . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . .
@@ -240,9 +264,9 @@ describe("given an oscillator set to speed 0.5s", () => {
 
   beforeEach(() => {
     render(<App />);
-    fireEvent.click(getCell(2, 3));
-    fireEvent.click(getCell(3, 3));
-    fireEvent.click(getCell(4, 3));
+    setCell(2, 3);
+    setCell(3, 3);
+    setCell(4, 3);
 
     fireEvent.change(screen.getByRole("slider"), {
       target: { value: 0.5 },
