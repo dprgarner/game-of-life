@@ -1,22 +1,8 @@
-import {
-  render,
-  screen,
-  getAllByRole,
-  fireEvent,
-} from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 import { parseBoard } from "./game";
 import Board from "./Board";
-
-export const getCells = () =>
-  screen
-    .getAllByRole("row")
-    .map((row) =>
-      getAllByRole(row, "cell").map((cell) => cell.classList.contains("alive"))
-    );
-
-export const getCell = (i, j) =>
-  getAllByRole(screen.getAllByRole("row")[i], "cell")[j];
+import { getCell, getBoardFromScreen } from "./testHelpers";
 
 test("renders a 2x2 box in a 4x4 grid", () => {
   const cells = parseBoard(`
@@ -27,7 +13,12 @@ test("renders a 2x2 box in a 4x4 grid", () => {
   `);
   render(<Board cells={cells} />);
 
-  expect(getCells()).toEqual(cells);
+  expect(getBoardFromScreen()).toMatchBoard(`
+    . . . .
+    . X X .
+    . X X .
+    . . . .
+  `);
 });
 
 test("triggers a callback on cell click", () => {

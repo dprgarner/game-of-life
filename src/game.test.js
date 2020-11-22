@@ -97,7 +97,7 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(board))).toEqual(parseBoard(board));
+    expect(iterate(parseBoard(board))).toMatchBoard(board);
   });
 
   it("leaves a square unchanged", () => {
@@ -109,7 +109,7 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(board))).toEqual(parseBoard(board));
+    expect(iterate(parseBoard(board))).toMatchBoard(board);
   });
 
   it("kills an isolated cell", () => {
@@ -129,7 +129,7 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(initialBoard))).toEqual(parseBoard(finalBoard));
+    expect(iterate(parseBoard(initialBoard))).toMatchBoard(finalBoard);
   });
 
   it("creates a new cell", () => {
@@ -149,6 +149,6 @@ describe("iterate", () => {
       . . . . . .
       . . . . . .
     `;
-    expect(iterate(parseBoard(initialBoard))).toEqual(parseBoard(finalBoard));
+    expect(iterate(parseBoard(initialBoard))).toMatchBoard(finalBoard);
   });
 });
